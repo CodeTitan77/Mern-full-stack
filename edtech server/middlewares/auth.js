@@ -1,103 +1,106 @@
-const User =require("../models/User");
-const mailSender= require("../utils/mailSender");
-const bcrypt =require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-//reset Password token .. token used as a search parameter
-exports.resetPasswordToken= async(req,res)=>{
-    //get email check validation
-    //link generate
-    //generate token
-    //update user by adding token and expiration time
-    //create url
-    //send mail containing url
-    //return response
+exports.auth = async(req,res,next)=>{
     try{
-        const email =req.body.email;
-    const user =await User.findOne({email:email});
-    if(!user){
-        return res.status(404).json({
+        //extract token
+
+        const token =req.cookies.token|| req.body.token|| req.header("Authorization").replace("Bearer ","");
+     if(!token){
+        return res.status(401).json({
             success:false,
-            message:'Your email is not registered'
-
+            message:'Token is missing',
         });
-    }
+     }
+     // verify the token
+     try{
+        const decode =  jwt.verify(token,process.env.JWT_SECRET);
+        console.log(decode);
+        req.user = decode;
 
- const token = crypto.randomUUID();
- const updatedDetails = await User.findOneAndUpdate({email:email},
-    {
-        
-            token: token,
-            resetPasswordExpires: Date.now()+ 5*60*1000,
+     }
+     catch(err){
+        return res.status(401).json({
+            success:false,
+            message:'token is invalid',
+        });
+     }
 
-        
-    },{new:true});
- 
+  next();
 
-
-    const url=`http://localhost:3000/update-password/${token}`;
-
-    await mailSender(email,"Password Reset Link",`Password reset link : ${url}`);
-    return res.json({
-        success:false,
-        message:'Email sent successfully and check email'
-    });
     }
     catch(error){
-        console.log(error);
+        return res.status(401).json({
+            success:false,
+            message:'something went wrong while validating token',
+        });
+
+
+    }
+}
+exports.isStudent=async(req,res,next)=>{
+    try{
+        if(req.user.accountType!=="Student"){
+            return res.status(401).json({
+                success:false,
+                message:'this is for students only',
+            });
+            
+
+        }
+
+
+    }
+    catch(error){
         return res.status(500).json({
             success:false,
-            message:'Something went wrong while sending reset pwd mail'
-        })
+            message:'User role cannot be verifies',
+        });
+
 
     }
-
 }
-exports.resetPassword= async(req,res)=>{
+exports.isInstructor=async(req,res,next)=>{
     try{
-        //token validation
-    //get userdetails from db
-    //hash password
-    //update password
+        if(req.user.accountType!=="Instructor"){
+            return res.status(401).json({
+                success:false,
+                message:'this is for instructor only',
+            });
+            
 
-    const {token,password,confirmPassword}=req.body;//frontend dalega token ko body mein
-    if(password!==confirmPassword){
-        return res.json({
-            success:false,
-            message:'Password not matching',
-        });
+        }
 
-    }
-    const userDetails= await User.findOne({token:token});
-    if(!userDetails){
-        return res.json({
-            success:false,
-            message:'Token is invalid',
 
-        });
-    }
-    if(userDetails.resetPasswordExpires<Date.now()){
-        return res.json({
-            success:false,
-            message:'plz regenerate your token',
-        });
-
-    }
-    const hashedPassword =await bcrypt.hash(password,10);
-    await User.findOneAndUpdate({token:token},{
-        password:hashedPassword,
-    },{new:true});
-
-     return res.status(200).json({
-            success:true,
-            message:'Password reset successful',
-        });
     }
     catch(error){
-        res.status(400).json({
+        return res.status(500).json({
             success:false,
-            message:'Password not updated',
-        })
+            message:'User role cannot be verifies',
+        });
+
+
     }
+}
+exports.isAdmin=async(req,res,next)=>{
+    try{
+        if(req.user.accountType!=="Admin"){
+            return res.status(401).json({
+                success:false,
+                message:'this is for Admin only',
+            });
+            
+
+        }
 
 
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:'User role cannot be verifies',
+        });
+
+
+    }
 }
