@@ -57,6 +57,7 @@ const {courseEnrollmentEmail}= require("../mail/tempates/courseEnrollmentEmail")
             userId,
         }
     };
+    
     //return response
     try{
         const paymentResponse = await instance.orders.create(options);
@@ -96,7 +97,60 @@ const {courseEnrollmentEmail}= require("../mail/tempates/courseEnrollmentEmail")
     const digest= shasum.digest("hex");
     if(signature===digest){
         console.log("payment is Authorized");
-        const {courseId,userId}= req
+        const {courseId,userId}= req.body.payload.payment.entity.notes;
+        try{
+            //fulfill the action
+            //find the course adn enroll the student in it 
+            const enrolledCourse= await Course.findOneAndUpdate({_id:courseId},
+                {$push:{
+                    studentsEnrolled:userId
+                }},
+                {new:true});
+                if(!enrolledCourse){
+                    return res.status(500).json({
+                        success:false,
+                        message:"Course Not Found",
+                    });
+                }
+                console.log(enrolledCourse);
+                const enrolledStudent= await User.findOneAndUpdate({
+                _id:userId,
+                },
+                
+                   { $push:
+                        {courses:courseId},
+                },
+                {
+                    new:true
+                },
+            );
+            //mail send krdo
+            const emailResponse=  await mailSender(enrolledStudent.email,
+                "congratulation you are boarded",
+                "random body",
+
+            );
+            console.log(emailResponse);
+            return res.status(200).json({
+                success:true,
+                message:"Signature verified and Course Added",
+            });
+
+        }
+        catch(error){
+            return res.status(500).json({
+                success:false,
+                message:error.message,
+            });
+
+        }
+
+    }
+    else{
+        return res.status(400).json({
+            success:false,
+            message:'Invalid request',
+        });
 
     }
 
