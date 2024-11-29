@@ -45,6 +45,12 @@ const Navbar = () => {
         </ul>
       </nav>
 
+      {/* loginsignin  */}
+      <div className='flex items-center gap-x-4'>
+        
+
+      </div>
+
       </div>
     </div>
   )
