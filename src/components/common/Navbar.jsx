@@ -9,7 +9,7 @@ import ProfileDropDown from './../core/Auth/ProfileDropDown';
 import { useState } from 'react';
 import { IoIosArrowDropdownCircle } from 'react-icons/io';
 
-const sublinks=[
+const subLinks=[
   {
     title:"Python",
     link:"/catalog/python"
@@ -51,7 +51,7 @@ const Navbar = () => {
     <div className='flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700'>
       <div className='flex w-11/12 max-w-maxContent items-center justify-between '>
       <Link to="/">
-       <img src={logo} width={160} height={42} loading='lazy'/>
+       <img src={logo} width={160} height={42} loading='lazy' alt=""/>
       </Link>
       {/* navtags */}
       <nav>
@@ -70,10 +70,19 @@ const Navbar = () => {
                                  bg-richblack-5 p-4 text-richblack-900 translate-y-[-80%]opacity-0 translate-x-[-50%] transition-all 
                                  duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]'>
                                   <div className='absolute translate-x-[80%] left-[50%] top-0 h-6 w-6 rotate-45 rounded bg-richblack-5 translate-y-[-45%]'>
-                                    {/* {
+                                    </div>
+                                    {
                                       subLinks.length? (
                                       (
-                                        sublinks.map()
+                                        subLinks.map((sublink,index)=>(
+                                          <Link to={ `${sublink.link}`}key={index}>
+                                           <p>
+                                            {sublink.title}
+                                           </p>
+                                          </Link>
+
+                                        ))
+                                        
                                       )
                                       ):(
                                         (<div>
@@ -81,8 +90,8 @@ const Navbar = () => {
                                           </div>
                                         )
                                       )
-                                    } */}
-                                  </div>
+                                    }
+                                  
 
                                 </div>
 
@@ -112,7 +121,7 @@ const Navbar = () => {
       {/* loginsignin  */}
       <div className='flex items-center gap-x-4'>
         {
-          user && user?.accountType !="Instructor" && (
+          user && user?.accountType !=="Instructor" && (
             <Link to="/dashboard/cart" className='relative'>
               <AiOutlineShoppingCart />
               {
