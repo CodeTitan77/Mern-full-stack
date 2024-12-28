@@ -47,26 +47,26 @@ const LearningGridArray = [
 
 const LearningGrid = () => {
   return (
-    <div className='grid mx-auto grid-col-1 lg:grid-cols-4 mb-10'>
+    <div  className='grid mx-auto grid-col-1 lg:grid-cols-4 mb-10 p-5 lg:w-fit]'>
       {
         LearningGridArray.map((card,index)=>{
           return (
-            <div key={index} className={`${index===0 && "lg:col-span-2"}
+            <div key={index} className={`${index===0 && "lg:col-span-2 lg:h-[280px] p-5"}
             ${
-              card.order%2===1 ? "bg-richblack-700" : "bg-richblack-800"
+              card.order%2===1 ? "bg-richblack-700 lg:h-[250px]" : "bg-richblack-800 lg:p-5 h-[280px]"
             }
-            ${card.order===3 && "lg:col-start-2"}`}> 
+            ${card.order===3 && "lg:col-start-2 lg:h-[280px]"}`}> 
                {
                 card.order<0?
-                (<div>
-                  <div>
+                (<div className='lg:w-[90%] flex flex-col pb-5 gap-3'>
+                  <div className='text-4xl font-semibold'>
                     {card.heading}
                     <HighlightText text= {card.highlightText}/>
                     </div>
-                    <p>
+                    <p className='font-medium'>
                       {card.description}
                     </p>
-                    <div>
+                    <div className='w-fit mt-4'>
                       <CTAButton active={true}
                       linkto={card.BtnLink}>
                         {card.BtnText}

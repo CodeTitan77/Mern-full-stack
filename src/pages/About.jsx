@@ -11,7 +11,7 @@ import LearningGrid from "../components/core/AboutPage/LearningGrid"
 
 const About = () => {
   return (
-    <div className='mt-[100px] text-white'>
+    <div className='mt-[100px] text-whit w-[11/12] max-w-maxContent'>
         <section>
             <div>
                 <header>
