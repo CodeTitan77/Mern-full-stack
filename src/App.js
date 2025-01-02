@@ -5,6 +5,7 @@ import Navbar from './components/common/Navbar';
 import Login from './pages/Login';
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
+import MyProfile from "./components/core/Dashboard/MyProfile" ;
 
 <Route
   path="login"

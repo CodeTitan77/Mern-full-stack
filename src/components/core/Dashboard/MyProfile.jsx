@@ -9,21 +9,27 @@ const MyProfile = () => {
   return (
     <div>
       <h1>My Profile</h1>
-      <div>
         {/* section one */}
+      <div>
+      
         <div>
-            <img src="{user?.image}" alt={`profile=${user?.firstName}`}
-            className='aspect-square w-[78px] rounded-full object-cover'/>
+            <img src={user?.image} alt={`profile=${user?.firstName}`}
+            className='aspect-square w-[78px] rounded-full object-cover'/> 
+            {/* make it a square to add it as a full circle */}
              <div>
                 <p>
-
+                 {user?.firstName + " "+ user?.lastName}
                 </p>
                 <p>
-
+                {user?.email}
                 </p>
              </div>
         </div>
-        <IconBtn/>
+        <IconBtn text="Edit" onClick={()=>{
+          navigate("/dashboard/settings")
+        }}>
+
+        </IconBtn>
     </div>
     </div>
   )
