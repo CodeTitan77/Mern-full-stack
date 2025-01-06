@@ -31,6 +31,77 @@ const MyProfile = () => {
 
         </IconBtn>
     </div>
+    {/* //section2 */}
+      <div>
+        <div>
+        <p>About</p>
+        <IconBtn text="Edit" onClick={()=>{
+          navigate("/dashboard/settings");
+        }}/>
+          </div>
+        
+      
+      <p>{user?.additionalDetails?.about ?? "Write something about yourself"}</p>
+    </div>
+    {/* section3 */}
+    <div>
+      <div>
+        <p>Personal Details</p>
+        <IconBtn text="Edit" onClick={()=>{
+          navigate("/dashboard/settings")
+        }}/>
+        <div>
+          <p>
+           First Name  
+          </p>
+          <p>
+              {user?.firstName}
+            </p>
+        </div>
+        <div>
+          <p>
+           Email 
+          </p>
+          <p>
+              {user?.email}
+            </p>
+        </div>
+        <div>
+          <p>
+           Gender
+          </p>
+          <p>
+              {user?.additionalDetails?.gender  ??  "add gender"}
+            </p>
+        </div>
+        <div>
+          <p>
+           Last Name
+          </p>
+          <p>
+              {user?.lastName}
+            </p>
+        </div>
+        <div>
+          <p>
+           Contact Number
+          </p>
+          <p>
+              {user?.additionalDetails?.contactNumber ??  "contact number"}
+            </p>
+        </div>
+        <div>
+          <p>
+           Date of birth
+          </p>
+          <p>
+              {user?.additionalDetails?.dateOfBirth ?? "Add dob"} 
+            </p>
+        </div>
+
+      
+        </div>
+      </div>
     </div>
   )
 }
