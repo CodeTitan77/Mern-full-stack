@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
 import MyProfile from "./components/core/Dashboard/MyProfile" ;
+import EnrolledCourses from "./components/core/Dashboard/Settings/EnrolledCourses";
 
 <Route
   path="login"
@@ -21,6 +22,7 @@ function App() {
     <Route path="/" element= {<Home/>}/>
     <Route path="/About" element ={<About/>}/>
     <Route path="/dashboard" element ={<Dashboard/>}/>
+    <Route path="/dashboard/enrolled-courses" element={<EnrolledCourses/>} />
   </Routes>
   
    </div>
