@@ -7,7 +7,7 @@ const PrivateRoute = ({children}) => {
    return children
     }
     else{
-        return <Navigate to="/login"/>
+        return <Navigate to="/signin"/>
     }
   return (
     <div>
