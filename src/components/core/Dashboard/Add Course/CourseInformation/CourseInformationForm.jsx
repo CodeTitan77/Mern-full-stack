@@ -144,7 +144,7 @@ const CourseInformationForm = () => {
   {
         errors.courseBenefits && (
           <span>
-            Course benefits is required 
+            Course benefits is require
           </span>
         )
       }
