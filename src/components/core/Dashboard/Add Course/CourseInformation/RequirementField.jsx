@@ -12,7 +12,7 @@ const RequirementField = (name,label,register,setValue,errors,getValues) => {
         })
 
     },[]);
-    const handleAddRequirement=()=>{
+    const handleAddRequirement=()=>{q
         if(requirement){
             setRequirementList(...requirementList,requirement);
             setRequirement("");
@@ -48,7 +48,7 @@ const RequirementField = (name,label,register,setValue,errors,getValues) => {
             requirementList.length>0 && (
                 <ul>
                     {
-                        requirementList.map((requirement,ind)=>{
+                        requirementList.map((requirement,ind)=>(
                             <li key={ind} className='flex items-center text-richblack-5'>
                                 <span>
                                     {requirement}
@@ -61,7 +61,7 @@ const RequirementField = (name,label,register,setValue,errors,getValues) => {
                                 </button>
                             </li>
 
-                        })
+                        ))
                     }
                 </ul>
             )
