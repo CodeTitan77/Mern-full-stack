@@ -12,7 +12,10 @@ const RequirementField = (name,label,register,setValue,errors,getValues) => {
         })
 
     },[]);
-    const handleAddRequirement=()=>{q
+    useEffect(()=>{
+        setValue(name,requirementList);
+    },[requirementList]);
+    const handleAddRequirement=()=>{
         if(requirement){
             setRequirementList(...requirementList,requirement);
             setRequirement("");

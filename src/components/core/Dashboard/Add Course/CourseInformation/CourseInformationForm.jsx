@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CourseInformationForm = () => {
     const {
@@ -11,6 +11,7 @@ const CourseInformationForm = () => {
         formState:{errors},
 
     } = useForm();
+    const token= useSelector((state)=state.auth);
     const {course,editCourse}= useSelector((state)=>state.course);
     const {loading,setLoading}=useState(false);
     const{courseCategories,setCourseCategories}=useState([]);
@@ -38,9 +39,52 @@ const CourseInformationForm = () => {
         getCategories();
         
     },[]);
+    const isFormUpdated=()=>{
+      const currentValues= getValues();
+      if(currentValues.courseTitle!==course.courseName||
+        currentValues.courseShortDesc!==course.courseDescription||
+        currentValues.coursePrice!==course.price||
+        currentValues.courseBenefits!==course.whatYouWillLearn||
+        currentValues.courseRequirements.toString()!==course.instructions.toString()
+
+
+      ) return true;
+      else
+      return false;
+    }
+    //handles next button click
     const onSubmit= async(data)=>{
+      if(editCourse){
+        if(isFormUpdated()){
+        const currentValues=getValues();
+        const formData= new FormData();
+        formData.append("courseId",course._id);
+        if(currentValues.courseTitle!=course.courseName){
+          formData.append("courseName",data.courseTitle);
+        }
+      
+      setLoading(true);
+      const result= await editCourseDetails(formData,token);
+      setLoading(false);
+      if(result){
+        setStep(2);
+        dispatch(setCourse(result));
+      }
+
+
+
 
     }
+    else{
+     toast.error("No changes made");
+    }
+    return;
+  }
+  const formData= new FormData();
+  formData.append("courseName",data.courseTitle);
+
+}
+    
 
   return (
    <form onSubmit={handleSubmit(onSubmit)}
@@ -159,6 +203,17 @@ const CourseInformationForm = () => {
   errors={errors}
   setValue={setValue}
   getValues={getValues}/>
+  <div>
+    {
+      editCourse && (
+        <button  onClick={()=>dispatch(setStep(2))} 
+        className='flex items-center gap-x-2 bg-richblack-300'>
+          Continue Without Saving
+        </button>
+      )
+    }
+    <IconBtn text={!editCourse ? "Next":"Save Changes"}/>
+  </div>
 
    </form>
   )
